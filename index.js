@@ -44,7 +44,10 @@ module.exports = function(_cfg, callback) {
 		http = require('http');
 	
 	
-	post = querystring(cfg.post);
+	if(typeof cfg.post === 'object')
+		post = querystring(cfg.post);
+	else
+		post = cfg.post;
 	
 	if(cfg.method === 'POST') {
 		if(typeof cfg.headers['Content-Type'] === 'undefined')
