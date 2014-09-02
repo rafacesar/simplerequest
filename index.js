@@ -64,7 +64,8 @@ module.exports = function(_cfg, callback) {
 		path:cfgUrl.path,
 		port:cfg.port,
 		method:cfg.method,
-		headers: cfg.headers
+		headers: cfg.headers,
+		auth:cfgUrl.auth
 	};
 	
 	if(!Buffer.isEncoding(cfg.responseCharset)) {
