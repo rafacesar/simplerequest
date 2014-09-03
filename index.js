@@ -108,6 +108,16 @@ module.exports = function(_cfg, callback) {
 					callback(e);
 				}
 			}
+			else if(cfg.parsing === 'json') {
+				try {
+					responseText = JSON.parse(responseText);
+					callback(null, responseText);
+				}
+				catch(e) {
+					ok = false;
+					callback(e);
+				}
+			}
 			else {
 				callback(null, responseText);
 			}
