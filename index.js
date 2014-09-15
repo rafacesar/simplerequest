@@ -105,7 +105,7 @@ module.exports = function(_cfg, callback) {
 				}
 				catch(e) {
 					ok = false;
-					callback(e);
+					callback(e.stack || e);
 				}
 			}
 			else if(cfg.parsing === 'json') {
@@ -115,7 +115,7 @@ module.exports = function(_cfg, callback) {
 				}
 				catch(e) {
 					ok = false;
-					callback(e);
+					callback(e.stack || e);
 				}
 			}
 			else {
