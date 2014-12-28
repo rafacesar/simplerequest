@@ -1,0 +1,24 @@
+{
+  "name": "simplerequest",
+  "version": "0.0.1",
+  "description": "Node request made simple",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafacesar/simplerequest.git"
+  },
+  "keywords": [
+    "request",
+    "parse",
+    "parser",
+    "http",
+    "json",
+    "html"
+  ],
+  "author": "rafa.cesar",
+  "license": "GPL-3",
+  "bugs": {
+    "url": "https://github.com/rafacesar/simplerequest/issues"
+  },
+  "homepage": "https://github.com/rafacesar/simplerequest"
+}
