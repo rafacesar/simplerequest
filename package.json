@@ -1,6 +1,6 @@
 {
   "name": "simplerequest",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Node request made simple",
   "main": "index.js",
   "repository": {
@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/rafacesar/simplerequest/issues"
   },
-  "homepage": "https://github.com/rafacesar/simplerequest"
+  "homepage": "https://github.com/rafacesar/simplerequest",
+  "dependencies": {
+    "encoding": "^0.1.11",
+    "jsdom": "^2.0.0",
+    "querystring": "^0.2.0"
+  }
 }
