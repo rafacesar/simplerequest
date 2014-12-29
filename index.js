@@ -2,6 +2,8 @@ var encoding = require('encoding'),
 	querystring = require('querystring').stringify,
 	url = require('url'),
 	jsdom = require('jsdom'),
+	xml2js = require('xml2js').parseString,
+	plist = require('plist').parse,
 	extend = function(base, _new) {
 		for(var prop in _new) {
 			if(_new.hasOwnProperty(prop)) {
@@ -12,12 +14,13 @@ var encoding = require('encoding'),
 			}
 		}
 		return base;
-	};
+	},
+	ok;
 module.exports = function(_cfg, callback) {
 	'use strict';
-	
-	var ok = true,
-	baseCfg = {
+	ok = true;
+
+	var baseCfg = {
 		url:'#',
 		port:80,
 		method:'get',
@@ -91,35 +94,31 @@ module.exports = function(_cfg, callback) {
 			if(!ok)
 				return;
 			
-			
 			responseText = decode(responseText, cfg.responseCharset);
 			
-			if(cfg.parsing === 'html') {
-				var cb = function(err, window) {
-					if(!ok)
-						return;
-					callback(err, window);
-				};
-				try {
-					jsdom.env(responseText, cb);
-				}
-				catch(e) {
-					ok = false;
-					callback(e.stack || e);
-				}
-			}
-			else if(cfg.parsing === 'json') {
-				try {
-					responseText = JSON.parse(responseText);
+			switch(cfg.parsing) {
+				case 'xHTML':
+				case 'fullHtml':
+				case 'full-html':
+				// case 'html':
+					parser.fullHtml(responseText, callback);
+					break;
+				case 'html':
+				case 'lightHtml':
+				case 'light-html':
+					parser.html(responseText, callback);
+					break;
+				case 'json':
+					parser.json(responseText, callback);
+					break;
+				case 'xml':
+					parser.xml(responseText, callback);
+					break;
+				case 'plist':
+					parser.plist(responseText, callback);
+					break;
+				default:
 					callback(null, responseText);
-				}
-				catch(e) {
-					ok = false;
-					callback(e.stack || e);
-				}
-			}
-			else {
-				callback(null, responseText);
 			}
 		});
 		
@@ -137,4 +136,67 @@ module.exports = function(_cfg, callback) {
 	});
 	
 	req.end();
+};
+var parser = {
+	json: function(data, callback) {
+		try {
+			data = JSON.parse(data);
+			callback(null, data);
+		}
+		catch(e) {
+			ok = false;
+			callback(e.stack || e);
+		}
+	},
+	fullHtml: function(data, callback) {
+		try {
+			var document = jsdom.jsdom(data, {
+				features: {
+					FetchExternalResources:false
+				}
+			});
+			callback(null, document.parentWindow);
+		}
+		catch(e) {
+			ok = false;
+			callback(e.stack || e);
+		}
+	},
+	html: function(data, callback) {
+		var cb = function(err, window) {
+			if(!ok)
+				return;
+			callback(err, window);
+		};
+		try {
+			jsdom.env(data, cb);
+		}
+		catch(e) {
+			ok = false;
+			callback(e.stack || e);
+		}
+	},
+	xml: function(data, callback) {
+		try {
+			xml2js(data, function (err, xml) {
+				if(!ok)
+					return;
+				callback(err, xml);
+			});
+		}
+		catch(e) {
+			ok = false;
+			callback(e.stack || e);
+		}
+	},
+	plist: function(data, callback) {
+		try {
+			data = plist(data);
+			callback(null, data);
+		}
+		catch(e) {
+			ok = false;
+			callback(e.stack || e);
+		}
+	}
 };

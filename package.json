@@ -1,6 +1,6 @@
 {
   "name": "simplerequest",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Node request made simple",
   "main": "index.js",
   "repository": {
@@ -24,6 +24,8 @@
   "dependencies": {
     "encoding": "^0.1.11",
     "jsdom": "^2.0.0",
-    "querystring": "^0.2.0"
+    "plist": "^1.1.0",
+    "querystring": "^0.2.0",
+    "xml2js": "^0.4.4"
   }
 }
